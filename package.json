@@ -1,0 +1,1 @@
+{ "name": "sonie-atelier", "private": true, "license": "MIT", "scripts": { "test": "node tests/loudness.test.js && node tests/wav.test.js" } }

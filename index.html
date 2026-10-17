@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sonie — mesure de loudness LUFS / True Peak</title>
+  <meta name="description" content="Mesurez la sonie (LUFS intégré, true peak, LRA) de vos masters dans le navigateur et voyez ce que Spotify, Apple Music ou YouTube en feront. Rien n'est envoyé.">
+  <meta name="theme-color" content="#14161c">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="14" width="4" height="14" rx="1"/><rect x="10" y="8" width="4" height="20" rx="1"/><rect x="17" y="4" width="4" height="24" rx="1" class="hot"/><rect x="24" y="11" width="4" height="17" rx="1"/></svg>
+      <div><h1>Sonie</h1><p data-i18n="tagline"></p></div>
+    </div>
+    <label class="lang"><span class="sr" data-i18n="language"></span>
+      <select id="lang"><option value="fr">Français</option><option value="en">English</option><option value="kab">Taqbaylit</option></select>
+    </label>
+  </header>
+
+  <main>
+    <!-- 1. Files -->
+    <section class="card" id="drop" tabindex="0">
+      <div class="dropzone">
+        <p class="big" data-i18n="dropTitle"></p>
+        <p class="muted" data-i18n="dropHint"></p>
+        <div class="row center">
+          <label class="btn primary"><input type="file" id="files" accept="audio/*,.wav,.flac,.mp3,.m4a,.aac,.ogg,.opus,.aif,.aiff" multiple hidden><span data-i18n="choose"></span></label>
+          <button class="btn" id="demoTone" data-i18n="demoTone"></button>
+          <button class="btn" id="demoLoud" data-i18n="demoLoud"></button>
+        </div>
+        <p class="privacy">🔒 <span data-i18n="privacy"></span></p>
+      </div>
+      <div id="queue" class="queue" hidden>
+        <table>
+          <thead><tr><th data-i18n="file"></th><th>LUFS-I</th><th>dBTP</th><th>LRA</th><th></th></tr></thead>
+          <tbody id="queueBody"></tbody>
+        </table>
+        <div class="row">
+          <button class="btn small" id="csv" data-i18n="exportCsv"></button>
+          <button class="btn small ghost" id="clear" data-i18n="clear"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Report -->
+    <section id="report" hidden>
+      <div class="card hero">
+        <div class="hero-main">
+          <p class="muted" id="rName"></p>
+          <div class="bignum"><span id="rI">–</span><small>LUFS</small></div>
+          <p class="muted" data-i18n="integrated"></p>
+        </div>
+        <div class="gauge-wrap">
+          <label><span data-i18n="target"></span>
+            <select id="target"></select>
+          </label>
+          <div class="gauge" id="gauge"><div class="zone"></div><div class="needle" id="needle"></div></div>
+          <p id="gaugeTxt" class="gauge-txt"></p>
+        </div>
+      </div>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="card">
+        <h2 data-i18n="timeline"></h2>
+        <div class="graph-wrap"><canvas id="graph" height="220"></canvas></div>
+        <div class="legend"><span class="lg st"></span><span data-i18n="shortTerm"></span><span class="lg mo"></span><span data-i18n="momentary"></span><span class="lg tg"></span><span data-i18n="targetLine"></span><span class="lg cl"></span><span data-i18n="clipsLegend"></span></div>
+        <div class="player">
+          <button class="btn primary" id="play" disabled>▶</button>
+          <span id="time" class="mono">0:00.0</span>
+          <label><span data-i18n="listenAs"></span> <select id="listenAs"></select></label>
+          <label><span data-i18n="compareWith"></span> <select id="compare"></select></label>
+          <button class="btn" id="ab" disabled>A / B</button>
+          <span id="abState" class="muted"></span>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2 data-i18n="findings"></h2>
+          <ul id="findings" class="findings"></ul>
+        </div>
+        <div class="card">
+          <h2 data-i18n="platforms"></h2>
+          <p class="muted small" data-i18n="platformsHint"></p>
+          <table class="plat"><thead><tr><th></th><th data-i18n="tgt"></th><th data-i18n="gain"></th><th data-i18n="plays"></th><th data-i18n="peakAfter"></th></tr></thead><tbody id="platBody"></tbody></table>
+        </div>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="png" data-i18n="exportPng"></button>
+        <button class="btn" id="json" data-i18n="exportJson"></button>
+      </div>
+    </section>
+
+    <details class="card help">
+      <summary data-i18n="helpTitle"></summary>
+      <div id="helpBody"></div>
+    </details>
+  </main>
+
+  <footer>
+    <p><span data-i18n="footer"></span> · <a href="https://github.com/salimadour31-boop/sonie-atelier">GitHub</a> · MIT</p>
+  </footer>
+
+
+  <script src="js/i18n.js"></script>
+  <script src="js/loudness.js"></script>
+  <script src="js/wav.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
